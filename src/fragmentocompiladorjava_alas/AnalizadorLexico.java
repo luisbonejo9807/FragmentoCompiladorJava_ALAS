@@ -6,10 +6,311 @@
 
 package fragmentocompiladorjava_alas;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author JLCG17
  */
 public class AnalizadorLexico {
+    private int indiceFila; //0 a n-1 de la cantidad de líneas del ingreso.
+    private int indiceCaracter; //0 a n-1 dentro de cada fila.
+    private ArrayList<String> entrada; //Arreglo de líneas del ingreso.
+    private String tokenActual;
+    private boolean silenciarMensajesDeError;
     
+    public AnalizadorLexico()
+    {
+        indiceFila = 0;
+        indiceCaracter = 0;
+        silenciarMensajesDeError = false;
+    }
+    
+    public AnalizadorLexico(ArrayList<String> ingreso)
+    {
+        indiceFila = 0;
+        indiceCaracter = 0;
+        entrada=ingreso;
+        silenciarMensajesDeError = false;
+    }
+    
+    /**
+     * Analiza si un determinado Token pertenece al léxico.
+     * 
+     * @param ingreso objeto Token a validar
+     * @return Tokens.ERROR si no forma parte del lexico, otro Tokens si pertenece
+     */
+    public Tokens analizarToken(Token ingreso)
+    {
+        Tokens t = Tokens.ERROR;
+        String token = ingreso.getToken();
+        if(token.startsWith("_")&&token.length()>1)
+        {
+            if(esLetra(token.charAt(1)))
+            {
+                boolean valido = false;
+                if(token.length()==2)
+                    valido = true;
+                else
+                    for(int i=2;i<token.length();i++)
+                    {
+                        valido = validoParaIdentificador(token.charAt(i));
+                        if(!valido) break;
+                    }
+                if(valido)
+                    t = Tokens.IDENTIFICADOR;
+            }
+        }
+        if(esDigitoNumerico(token.charAt(0)))
+        {
+            if(token.contains("."))
+            {
+                String[] partes = new String[]{token.substring(0,token.indexOf(".")),token.substring(token.indexOf(".")+1)};
+                //String[] partes = token.split(".",2); no me funcionó, por eso la línea de arriba.
+                boolean valido = false;
+                for(int i=0;i<2;i++)
+                {
+                    if(partes[i].isEmpty()) break;
+                    if(partes[i].length()==1)
+                        valido = esDigitoNumerico(partes[i].charAt(0));
+                    else
+                        for(int j=0;j<partes[i].length();j++)
+                        {
+                            valido = esDigitoNumerico(partes[i].charAt(j));
+                            if(!valido) break;
+                        }
+                    if(!valido) break;
+                }
+                if(valido)
+                    t = Tokens.NUMERO_DOUBLE;
+            }else{
+                boolean valido = false;
+                if(token.length()==1)
+                    valido = true;
+                else
+                    for(int i=0;i<token.length();i++)
+                    {
+                        valido = esDigitoNumerico(token.charAt(i));
+                        if(!valido) break;
+                    }
+                if(valido)
+                    t = Tokens.NUMERO_LONG;
+            }
+        }
+        switch(token)
+        {
+            case "long": t = Tokens.LONG; break;
+            case "double": t = Tokens.DOUBLE; break;
+            case "while": t = Tokens.WHILE; break;
+            case "if": t = Tokens.IF; break;
+            case "(": t = Tokens.PARIZQ; break;
+            case ")": t = Tokens.PARDER; break;
+            case "{": t = Tokens.LLAVEIZQ; break;
+            case "}": t = Tokens.LLAVEDER; break;
+            case ";": t = Tokens.PYCOMA; break;
+            case ",": t = Tokens.COMA; break;
+            case "write": t = Tokens.WRITE; break;
+            case "read": t = Tokens.READ; break;
+            case "else": t = Tokens.ELSE; break;
+            case "break": t = Tokens.BREAK; break;
+            case "continue": t = Tokens.CONTINUE; break;
+            case "==": t = Tokens.IGUAL; break;
+            case "!=": t = Tokens.DISTINTO; break;
+            case "<>": t = Tokens.DISTINTO; break;
+            case ">=": t = Tokens.MAYORIGUAL; break;
+            case "<=": t = Tokens.MENORIGUAL; break;
+            case "<": t = Tokens.MENOR; break;
+            case ">": t = Tokens.MAYOR; break;
+            case "+=": t = Tokens.MASNUMERO; break;
+            case "-=": t = Tokens.MENOSNUMERO; break;
+            case "*=": t = Tokens.PORNUMERO; break;
+            case "/=": t = Tokens.DIVIDIDONUMERO; break;
+            case "++": t = Tokens.MASUNO; break;
+            case "--": t = Tokens.MENOSUNO; break;
+            case "+": t = Tokens.MAS; break;
+            case "-": t = Tokens.MENOS; break;
+            case "*": t = Tokens.POR; break;
+            case "/": t = Tokens.DIVISION; break;
+            case "=": t = Tokens.ASIGNACION; break;
+            case "&&": t = Tokens.AND; break;
+            case "||": t = Tokens.OR; break;
+            case " ": t = Tokens.ESPACIO; break;
+            case "\t": t = Tokens.ESPACIO; break;
+        }
+        if(t==Tokens.ERROR && !silenciarMensajesDeError)
+        {
+            System.err.println("Error en línea "+(ingreso.getIndiceFila()+1)+", caracter "+(ingreso.getIndiceComienzo()+1)+": \""+token+"\" no pertenece al léxico.");
+        }
+        return t;
+    }
+    
+    private boolean validoParaIdentificador(char c)
+    {
+        boolean valido = false;
+        if(c >= 48 && c <= 57)
+            valido=true;
+        if(c >= 65 && c <= 90)
+            valido=true;
+        if(c==95)
+            valido=true;
+        if(c >= 97 && c <= 122)
+            valido=true;
+        return valido;
+    }
+    
+    private boolean esLetra(char c)
+    {
+        boolean es = false;
+        if(c >= 65 && c <= 90)
+            es=true;
+        if(c >= 97 && c <= 122)
+            es=true;
+        return es;
+    }
+    
+    private boolean esDigitoNumerico(char c)
+    {
+        boolean valido = false;
+        if(c >= 48 && c <= 57)
+            valido=true;
+        return valido;
+    }
+    
+    /**
+     * Esta función arma el siguiente token del ingreso asignado al analizador y valida que sea del léxico.
+     * 
+     * @return Tokens.Error si el token pertenece al léxico, otro Tokens caso contrario; Tokens.EOT si ya se recorrió todo el ingreso
+     * @throws NullPointerException en caso de que no se haya asignado ingreso al analizador
+     */
+    public Tokens siguienteToken() throws NullPointerException
+    {
+        Tokens t = Tokens.ERROR;
+        String linea = "";
+        String token = "";
+        if(indiceFila==entrada.size())
+            t = Tokens.EOT; //End Of Text
+        else
+        {
+            linea = entrada.get(indiceFila);
+            if(!linea.trim().isEmpty())
+            {
+                if(validoParaIdentificador(linea.charAt(indiceCaracter))) //id o número
+                {
+                    String aux = linea.substring(indiceCaracter);
+                    if(aux.startsWith("_")) //¿Identificador?
+                    {
+                        for(int i=0;i<aux.length();i++)
+                            if(!validoParaIdentificador(aux.charAt(i)))
+                            {
+                                aux = aux.substring(0,i);
+                                break;
+                            }
+                        token = aux;
+                    }else{
+                        if(esLetra(aux.charAt(0))) //¿Palabra primitiva?
+                        {
+                            String[] primitivas = new String[]{"if","while","break","else","continue","long","double","read","write"};
+                            for(int i=0;i<primitivas.length;i++)
+                                if(aux.startsWith(primitivas[i]))
+                                    token = primitivas[i];
+                        }
+                        if(esDigitoNumerico(aux.charAt(0))) // ¿Número?
+                        {
+                            for(int i=0;i<aux.length();i++)
+                            {
+                                if(!esDigitoNumerico(aux.charAt(i))&&aux.charAt(i)!='.')
+                                {
+                                    token = aux.substring(0,i);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }else{
+                    if(linea.substring(indiceCaracter,indiceCaracter+1).equals(" ")||linea.substring(indiceCaracter,indiceCaracter+1).equals("\t"))
+                    {
+                        token = linea.substring(indiceCaracter,indiceCaracter+1);
+                    }
+                    if(indiceCaracter<=linea.length()-1)
+                    {
+                        if(validoParaIdentificador(linea.charAt(indiceCaracter))) //Si después de saltear espacios hay id o número.
+                        {
+                            t = siguienteToken();
+                        }else{ //Si es un símbolo.
+                            char caux;
+                            try{
+                                String aux = linea.substring(indiceCaracter, indiceCaracter+2); //¿Es de dos caracteres?
+                                String validos = "++--+=-=*=/===<=>=!=<>&&||";
+                                for(int i=0;i<validos.length();i+=2)
+                                {
+                                    token = aux.equals(validos.substring(i,i+2)) ? aux : "";
+                                    if(!token.isEmpty()) break;
+                                }
+                                if(token.isEmpty()) // ¿Es de un caracter?
+                                {
+                                    caux = linea.charAt(indiceCaracter);
+                                    validos = "(){},.=<>+-*/;";
+                                    for(int i=0;i<validos.length();i++)
+                                    {
+                                        token = caux==validos.charAt(i) ? String.valueOf(caux) : "";
+                                        break;
+                                    }
+                                }
+                            }catch(StringIndexOutOfBoundsException exc)
+                            {
+                                caux = linea.charAt(indiceCaracter); //Código por si es el último caracter de la línea.
+                                String validos = "(){},.=<>+-*/;";
+                                for(int i=0;i<validos.length();i++)
+                                {
+                                    token = caux==validos.charAt(i) ? String.valueOf(caux) : "";
+                                    break;
+                                }
+                            }
+                        }
+                    }else{
+                        indiceCaracter=0;
+                        indiceFila++;
+                    }
+                }
+                if(!token.isEmpty())
+                {
+                    tokenActual = token;
+                    t = analizarToken(new Token(token,indiceFila,indiceCaracter));
+                    indiceCaracter += tokenActual.length();
+                    if(indiceCaracter>linea.length()-1)
+                    {
+                        indiceCaracter=0;
+                        indiceFila++;
+                    }
+                }else{
+                    tokenActual = linea.substring(indiceCaracter,indiceCaracter+1);
+                    t = analizarToken(new Token(tokenActual,indiceFila,indiceCaracter));
+                    indiceCaracter++;
+                    if(indiceCaracter>linea.length()-1)
+                    {
+                        indiceCaracter=0;
+                        indiceFila++;
+                    }
+                }
+            }else{
+                if(indiceFila<entrada.size())
+                {
+                    indiceFila++;
+                    t = siguienteToken();
+                }
+                if(indiceFila==entrada.size())
+                    t = Tokens.EOT;
+            }
+        }
+        return t;
+    }
+
+    public void setIngreso(ArrayList<String> ingreso) {
+        entrada = ingreso;
+    }
+
+    public String getTokenActual() {
+        return tokenActual;
+    }
+
 }

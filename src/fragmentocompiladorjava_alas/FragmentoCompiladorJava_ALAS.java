@@ -6,6 +6,10 @@
 
 package fragmentocompiladorjava_alas;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+
 /**
  *
  * @author JLCG17
@@ -17,7 +21,20 @@ public class FragmentoCompiladorJava_ALAS {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        
+        probarAnalizadorLéxico("src/fragmentocompiladorjava_alas/codigofuente.fjl");
     }
-    
+    public static void probarAnalizadorLéxico(String directorio)
+    {
+        try{
+            CodigoFuente cf = new CodigoFuente(directorio);
+            AnalizadorLexico al = new AnalizadorLexico(cf.getLineas());
+            Tokens t;
+            while((t=al.siguienteToken())!=Tokens.EOT)
+                System.out.println("\""+al.getTokenActual()+"\" es "+t);
+        }catch(FileNotFoundException exc){
+            System.err.println("No se encontró el archivo con el código fuente.");
+        }catch(IOException exc){
+            System.err.println("Hubo un error durante la lectura del archivo con el código fuente.");
+        }
+    }
 }
