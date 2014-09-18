@@ -17,13 +17,12 @@ public class AnalizadorLexico {
     private int indiceCaracter; //0 a n-1 dentro de cada fila.
     private ArrayList<String> entrada; //Arreglo de líneas del ingreso.
     private String tokenActual;
-    private boolean silenciarMensajesDeError;
     
     public AnalizadorLexico()
     {
         indiceFila = 0;
         indiceCaracter = 0;
-        silenciarMensajesDeError = false;
+        tokenActual = "";
     }
     
     public AnalizadorLexico(ArrayList<String> ingreso)
@@ -31,7 +30,7 @@ public class AnalizadorLexico {
         indiceFila = 0;
         indiceCaracter = 0;
         entrada=ingreso;
-        silenciarMensajesDeError = false;
+        tokenActual = "";
     }
     
     /**
@@ -137,10 +136,7 @@ public class AnalizadorLexico {
             case " ": t = Tokens.ESPACIO; break;
             case "\t": t = Tokens.ESPACIO; break;
         }
-        if(t==Tokens.ERROR && !silenciarMensajesDeError)
-        {
             System.err.println("Error en línea "+(ingreso.getIndiceFila()+1)+", caracter "+(ingreso.getIndiceComienzo()+1)+": \""+token+"\" no pertenece al léxico.");
-        }
         return t;
     }
     
@@ -188,7 +184,10 @@ public class AnalizadorLexico {
         String linea = "";
         String token = "";
         if(indiceFila==entrada.size())
+        {
             t = Tokens.EOT; //End Of Text
+            tokenActual = "";
+        }
         else
         {
             linea = entrada.get(indiceFila);
@@ -299,7 +298,10 @@ public class AnalizadorLexico {
                     t = siguienteToken();
                 }
                 if(indiceFila==entrada.size())
+                {
                     t = Tokens.EOT;
+                    tokenActual = "";
+                }
             }
         }
         return t;
@@ -307,6 +309,8 @@ public class AnalizadorLexico {
 
     public void setIngreso(ArrayList<String> ingreso) {
         entrada = ingreso;
+        indiceCaracter = indiceFila = 0;
+        tokenActual = "";
     }
 
     public String getTokenActual() {
