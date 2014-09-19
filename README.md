@@ -16,4 +16,5 @@ new commit/1° commit (hecho por JLCG17) añade:
 * codigofuente.fjl (archivo donde está el código a analizar)
 * código en AnalizadorLexico.java (la funcionalidad indispensable)
 * código en el main para probar el AnalizadorLexico
+* CodigoFuente.java (para abrir el archivo codigofuente.fjl)
 
