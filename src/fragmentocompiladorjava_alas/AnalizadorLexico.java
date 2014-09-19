@@ -136,6 +136,7 @@ public class AnalizadorLexico {
             case " ": t = Tokens.ESPACIO; break;
             case "\t": t = Tokens.ESPACIO; break;
         }
+        if(t == Tokens.ERROR)
             System.err.println("Error en línea "+(ingreso.getIndiceFila()+1)+", caracter "+(ingreso.getIndiceComienzo()+1)+": \""+token+"\" no pertenece al léxico.");
         return t;
     }
