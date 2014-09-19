@@ -18,3 +18,7 @@ new commit/1° commit (hecho por JLCG17) añade:
 * código en el main para probar el AnalizadorLexico
 * CodigoFuente.java (para abrir el archivo codigofuente.fjl)
 
+4° commit (hecho por JLCG17) añade:
+* funcionalidad para mostrar solo los errores que verá el usuario final por consola o ver también todos los tokens
+* AnalizadorLexico ahora muestra una palabra errónea entera y no letra por letra por consola de usuario final
+
