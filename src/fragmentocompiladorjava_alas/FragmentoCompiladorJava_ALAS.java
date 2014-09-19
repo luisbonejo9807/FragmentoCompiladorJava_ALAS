@@ -21,16 +21,17 @@ public class FragmentoCompiladorJava_ALAS {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        probarAnalizadorLéxico("src/fragmentocompiladorjava_alas/codigofuente.fjl");
+        probarAnalizadorLéxico("src/fragmentocompiladorjava_alas/codigofuente.fjl",true);
     }
-    public static void probarAnalizadorLéxico(String directorio)
+    public static void probarAnalizadorLéxico(String directorio,boolean mostrarSoloErrores)
     {
         try{
             CodigoFuente cf = new CodigoFuente(directorio);
             AnalizadorLexico al = new AnalizadorLexico(cf.getLineas());
             Tokens t;
             while((t=al.siguienteToken())!=Tokens.EOT)
-                System.out.println("\""+al.getTokenActual()+"\" es "+t);
+                if(!mostrarSoloErrores)
+                    System.out.println("\""+al.getTokenActual()+"\" es "+t);
         }catch(FileNotFoundException exc){
             System.err.println("No se encontró el archivo con el código fuente.");
         }catch(IOException exc){

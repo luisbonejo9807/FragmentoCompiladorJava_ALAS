@@ -17,12 +17,14 @@ public class AnalizadorLexico {
     private int indiceCaracter; //0 a n-1 dentro de cada fila.
     private ArrayList<String> entrada; //Arreglo de líneas del ingreso.
     private String tokenActual;
+    private Token bufferErrores;
     
     public AnalizadorLexico()
     {
         indiceFila = 0;
         indiceCaracter = 0;
         tokenActual = "";
+        bufferErrores = new Token("",0,0);
     }
     
     public AnalizadorLexico(ArrayList<String> ingreso)
@@ -31,6 +33,7 @@ public class AnalizadorLexico {
         indiceCaracter = 0;
         entrada=ingreso;
         tokenActual = "";
+        bufferErrores = new Token("",0,0);
     }
     
     /**
@@ -137,7 +140,27 @@ public class AnalizadorLexico {
             case "\t": t = Tokens.ESPACIO; break;
         }
         if(t == Tokens.ERROR)
-            System.err.println("Error en línea "+(ingreso.getIndiceFila()+1)+", caracter "+(ingreso.getIndiceComienzo()+1)+": \""+token+"\" no pertenece al léxico.");
+        {
+            if(token.length()>1)
+            {
+                System.err.println("Error en línea "+(ingreso.getIndiceFila()+1)+", caracter "+(ingreso.getIndiceComienzo()+1)+": \""+token+"\" no pertenece al léxico.");
+            }else{
+                if(bufferErrores.getToken().length()==0)
+                {
+                    bufferErrores.setIndiceFila(ingreso.getIndiceFila());
+                    bufferErrores.setIndiceComienzo(ingreso.getIndiceComienzo());
+                }
+                bufferErrores.setToken(bufferErrores.getToken()+token);
+            }
+        }
+        else
+        {
+            if(bufferErrores.getToken().length()>0)
+            {
+                System.err.println("Error en línea "+(bufferErrores.getIndiceFila()+1)+", caracter "+(bufferErrores.getIndiceComienzo()+1)+": \""+bufferErrores.getToken()+"\" no pertenece al léxico.");
+                bufferErrores = new Token("",0,0);
+            }
+        }
         return t;
     }
     
