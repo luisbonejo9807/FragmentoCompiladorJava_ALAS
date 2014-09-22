@@ -16,14 +16,14 @@ public class AnalizadorLexico {
     private int indiceFila; //0 a n-1 de la cantidad de líneas del ingreso.
     private int indiceCaracter; //0 a n-1 dentro de cada fila.
     private ArrayList<String> entrada; //Arreglo de líneas del ingreso.
-    private String tokenActual;
+    private Token tokenActual;
     private Token bufferErrores;
     
     public AnalizadorLexico()
     {
         indiceFila = 0;
         indiceCaracter = 0;
-        tokenActual = "";
+        tokenActual = new Token("",0,0);
         bufferErrores = new Token("",0,0);
     }
     
@@ -32,12 +32,13 @@ public class AnalizadorLexico {
         indiceFila = 0;
         indiceCaracter = 0;
         entrada=ingreso;
-        tokenActual = "";
+        tokenActual = new Token("",0,0);
         bufferErrores = new Token("",0,0);
     }
     
     /**
      * Analiza si un determinado Token pertenece al léxico.
+     * Imprime mensaje de error si no pertenece.
      * 
      * @param ingreso objeto Token a validar
      * @return Tokens.ERROR si no forma parte del lexico, otro Tokens si pertenece
@@ -133,7 +134,7 @@ public class AnalizadorLexico {
             case "-": t = Tokens.MENOS; break;
             case "*": t = Tokens.POR; break;
             case "/": t = Tokens.DIVISION; break;
-            case "=": t = Tokens.ASIGNACION; break;
+            case "=": t = Tokens.ASIGNADOR; break;
             case "&&": t = Tokens.AND; break;
             case "||": t = Tokens.OR; break;
             case " ": t = Tokens.ESPACIO; break;
@@ -210,7 +211,7 @@ public class AnalizadorLexico {
         if(indiceFila==entrada.size())
         {
             t = Tokens.EOT; //End Of Text
-            tokenActual = "";
+            tokenActual = new Token("",0,0);
         }
         else
         {
@@ -297,17 +298,17 @@ public class AnalizadorLexico {
                 }
                 if(!token.isEmpty())
                 {
-                    tokenActual = token;
+                    tokenActual = new Token(token,indiceFila,indiceCaracter);
                     t = analizarToken(new Token(token,indiceFila,indiceCaracter));
-                    indiceCaracter += tokenActual.length();
+                    indiceCaracter += tokenActual.getToken().length();
                     if(indiceCaracter>linea.length()-1)
                     {
                         indiceCaracter=0;
                         indiceFila++;
                     }
                 }else{
-                    tokenActual = linea.substring(indiceCaracter,indiceCaracter+1);
-                    t = analizarToken(new Token(tokenActual,indiceFila,indiceCaracter));
+                    tokenActual = new Token(linea.substring(indiceCaracter,indiceCaracter+1),indiceFila,indiceCaracter);
+                    t = analizarToken(tokenActual);
                     indiceCaracter++;
                     if(indiceCaracter>linea.length()-1)
                     {
@@ -324,7 +325,7 @@ public class AnalizadorLexico {
                 if(indiceFila==entrada.size())
                 {
                     t = Tokens.EOT;
-                    tokenActual = "";
+                    tokenActual = new Token("",0,0);
                 }
             }
         }
@@ -334,10 +335,10 @@ public class AnalizadorLexico {
     public void setIngreso(ArrayList<String> ingreso) {
         entrada = ingreso;
         indiceCaracter = indiceFila = 0;
-        tokenActual = "";
+        tokenActual = new Token("",0,0);
     }
 
-    public String getTokenActual() {
+    public Token getTokenActual() {
         return tokenActual;
     }
 
