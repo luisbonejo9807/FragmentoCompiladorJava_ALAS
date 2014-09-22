@@ -22,3 +22,10 @@ new commit/1° commit (hecho por JLCG17) añade:
 * funcionalidad para mostrar solo los errores que verá el usuario final por consola o ver también todos los tokens
 * AnalizadorLexico ahora muestra una palabra errónea entera y no letra por letra por consola de usuario final
 
+5° commit (hecho por JLCG17) añade:
+* corrección del nombre de uno o más tokens del enum Tokens
+* corrección a la prueba del analizador léxico en el main
+* prueba aún no 100% funcional del analizador sintáctico en el main
+* código nuevo en AnalizadorSintactico.java
+* NodoSintactico.java para armar el árbol sintáctico que devolverá el analizador sintáctico
+* sintaxis.txt como ayuda-memoria de la sintaxis que se desea evaluar con el analizador sintáctico
