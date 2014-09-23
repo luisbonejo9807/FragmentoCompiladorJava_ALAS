@@ -29,3 +29,7 @@ new commit/1° commit (hecho por JLCG17) añade:
 * código nuevo en AnalizadorSintactico.java
 * NodoSintactico.java para armar el árbol sintáctico que devolverá el analizador sintáctico
 * sintaxis.txt como ayuda-memoria de la sintaxis que se desea evaluar con el analizador sintáctico
+
+6° commit (hecho por JLCG17) añade:
+* AutomataPilaSintaxis.java aún no funcional, pero con pila, matriz lógica y contador de estado actual.
+* PilaDeCaracteres.java que sirve como pila para la clase AutomataPilaSintaxis.java
