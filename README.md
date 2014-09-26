@@ -33,3 +33,7 @@ new commit/1° commit (hecho por JLCG17) añade:
 6° commit (hecho por JLCG17) añade:
 * AutomataPilaSintaxis.java aún no funcional, pero con pila, matriz lógica y contador de estado actual.
 * PilaDeCaracteres.java que sirve como pila para la clase AutomataPilaSintaxis.java
+
+7° commit (hecho por JLCG17) añade:
+* Documentación para los métodos de PilaDeCaracteres.java.
+* Código funcional de AutomataPilaSintaxis.java (aún no terminado, pero incluye matriz para cambios de estado del autómata y validación sintáctica de un token por vez con algunos mensajes de error incluidos).

@@ -18,9 +18,8 @@ public class PilaDeCaracteres {
     public PilaDeCaracteres()
     {
         pila = new ArrayList<Character>();
-        pila.add(new Character('z'));
         tope=-1;
-        tope++;
+        agregarCaracter('z');
     }
     public boolean vacia()
     {
@@ -30,15 +29,38 @@ public class PilaDeCaracteres {
     {
         return tope;
     }
+    /**
+     * Agrega un caracter al tope de la pila.
+     * 
+     * @param c char
+     */
     public void agregarCaracter(char c)
     {
         pila.add(new Character(c));
         tope++;
     }
+    /**
+     * ADVERTENCIA: método destructivo.
+     * 
+     * @return char
+     * @throws NullPointerException cuando la pila está vacía
+     */
     public char getCaracterDeTope() throws NullPointerException
     {
         if(vacia()) throw new NullPointerException("La pila está vacía.");
         tope--;
         return pila.remove(tope).charValue();
+    }
+    /**
+     * ADVERTENCIA: método no destructivo.
+     * 
+     * @return char
+     * @throws NullPointerException cuando la pila está vacía
+     */
+    public char verTope() throws NullPointerException
+    {
+        if(vacia()) throw new NullPointerException("La pila está vacía.");
+        tope--;
+        return pila.get(tope).charValue();
     }
 }
