@@ -14,11 +14,20 @@ public class Token {
     private int indiceFila;
     private int indiceComienzo;
     private String token;
+    private String tipo;
 
-    public Token(String token,int indiceFila, int indiceComienzo) {
+    public Token(String token, int indiceFila, int indiceComienzo) {
         this.indiceFila = indiceFila;
         this.indiceComienzo = indiceComienzo;
         this.token = token;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public int getIndiceFila() {

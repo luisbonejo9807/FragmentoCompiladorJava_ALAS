@@ -161,6 +161,7 @@ public class AnalizadorLexico {
                 System.err.println("Error en línea "+(bufferErrores.getIndiceFila()+1)+", caracter "+(bufferErrores.getIndiceComienzo()+1)+": \""+bufferErrores.getToken()+"\" no pertenece al léxico.");
                 bufferErrores = new Token("",0,0);
             }
+            tokenActual.setTipo(t.toString());
         }
         return t;
     }
@@ -206,7 +207,7 @@ public class AnalizadorLexico {
     public Tokens siguienteToken() throws NullPointerException
     {
         Tokens t = Tokens.ERROR;
-        String linea = "";
+        String linea;
         String token = "";
         if(indiceFila==entrada.size())
         {
@@ -254,46 +255,47 @@ public class AnalizadorLexico {
                     if(linea.substring(indiceCaracter,indiceCaracter+1).equals(" ")||linea.substring(indiceCaracter,indiceCaracter+1).equals("\t"))
                     {
                         token = linea.substring(indiceCaracter,indiceCaracter+1);
-                    }
-                    if(indiceCaracter<=linea.length()-1)
-                    {
-                        if(validoParaIdentificador(linea.charAt(indiceCaracter))) //Si después de saltear espacios hay id o número.
+                    }else{
+                        if(indiceCaracter<=linea.length()-1)
                         {
-                            t = siguienteToken();
-                        }else{ //Si es un símbolo.
-                            char caux;
-                            try{
-                                String aux = linea.substring(indiceCaracter, indiceCaracter+2); //¿Es de dos caracteres?
-                                String validos = "++--+=-=*=/===<=>=!=<>&&||";
-                                for(int i=0;i<validos.length();i+=2)
+                            if(validoParaIdentificador(linea.charAt(indiceCaracter)))
+                            {
+                                t = siguienteToken();
+                            }else{ //Si es un símbolo.
+                                char caux;
+                                try{
+                                    String aux = linea.substring(indiceCaracter, indiceCaracter+2); //¿Es de dos caracteres?
+                                    String validos = "++--+=-=*=/===<=>=!=<>&&||";
+                                    for(int i=0;i<validos.length();i+=2)
+                                    {
+                                        token = aux.equals(validos.substring(i,i+2)) ? aux : "";
+                                        if(!token.isEmpty()) break;
+                                    }
+                                    if(token.isEmpty()) // ¿Es de un caracter?
+                                    {
+                                        caux = linea.charAt(indiceCaracter);
+                                        validos = "(){},.=<>+-*/;";
+                                        for(int i=0;i<validos.length();i++)
+                                        {
+                                            token = caux==validos.charAt(i) ? String.valueOf(caux) : "";
+                                            break;
+                                        }
+                                    }
+                                }catch(StringIndexOutOfBoundsException exc)
                                 {
-                                    token = aux.equals(validos.substring(i,i+2)) ? aux : "";
-                                    if(!token.isEmpty()) break;
-                                }
-                                if(token.isEmpty()) // ¿Es de un caracter?
-                                {
-                                    caux = linea.charAt(indiceCaracter);
-                                    validos = "(){},.=<>+-*/;";
+                                    caux = linea.charAt(indiceCaracter); //Código por si es el último caracter de la línea.
+                                    String validos = "(){},.=<>+-*/;";
                                     for(int i=0;i<validos.length();i++)
                                     {
                                         token = caux==validos.charAt(i) ? String.valueOf(caux) : "";
                                         break;
                                     }
                                 }
-                            }catch(StringIndexOutOfBoundsException exc)
-                            {
-                                caux = linea.charAt(indiceCaracter); //Código por si es el último caracter de la línea.
-                                String validos = "(){},.=<>+-*/;";
-                                for(int i=0;i<validos.length();i++)
-                                {
-                                    token = caux==validos.charAt(i) ? String.valueOf(caux) : "";
-                                    break;
-                                }
                             }
+                        }else{
+                            indiceCaracter=0;
+                            indiceFila++;
                         }
-                    }else{
-                        indiceCaracter=0;
-                        indiceFila++;
                     }
                 }
                 if(!token.isEmpty())
@@ -317,12 +319,12 @@ public class AnalizadorLexico {
                     }
                 }
             }else{
-                if(indiceFila<entrada.size())
+                if(indiceFila<entrada.size()-1)
                 {
                     indiceFila++;
                     t = siguienteToken();
                 }
-                if(indiceFila==entrada.size())
+                if(indiceFila==entrada.size()-1)
                 {
                     t = Tokens.EOT;
                     tokenActual = new Token("",0,0);

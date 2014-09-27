@@ -14,7 +14,8 @@ SECUENCIA ::= ORACION SECUENCIA
             | MIENTRAS SECUENCIA
             ;
 ORACION ::= INSTRUCCION PYCOMA
-        ;
+            | PYCOMA
+            ;
 INSTRUCCION ::= DECLARACION
             | ASIGNACION
             | LEER

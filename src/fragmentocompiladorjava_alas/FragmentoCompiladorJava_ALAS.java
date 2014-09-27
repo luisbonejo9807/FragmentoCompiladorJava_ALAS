@@ -8,7 +8,6 @@ package fragmentocompiladorjava_alas;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  *
@@ -21,8 +20,8 @@ public class FragmentoCompiladorJava_ALAS {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        probarAnalizadorLexico("src/fragmentocompiladorjava_alas/codigofuente.fjl",true);
-        //probarAnalizadorSintactico("src/fragmentocompiladorjava_alas/codigofuente.fjl", true);
+        //probarAnalizadorLexico("src/fragmentocompiladorjava_alas/codigofuente.fjl",true);
+        probarAnalizadorSintactico("src/fragmentocompiladorjava_alas/codigofuente.fjl", true);
     }
     public static void probarAnalizadorLexico(String directorio,boolean mostrarSoloErrores)
     {

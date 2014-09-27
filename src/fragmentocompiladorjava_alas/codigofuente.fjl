@@ -1,8 +1,50 @@
-long _n = 17;
-double _d = 1.0;
-while(_d>0.17)
+double _n,_d,_t,_l;
+long _c=0;
+while(((_n)==(_m/0.75))&&(((_t)>(_s*2))||((_n)<(17)))&&((_r+7)>=(3.14)))
 {
-    write _n;
-    _d /= 2.0;
+
+_z = 4570.75*2.3/4.45+8.9-2.0;
+
+if(_z<17.17){break;}
+else{continue;}
+if(_z<17.17) break;
+else continue;
 }
-write _d;
+
+if(_n<>2)
+{
+    if(_n==1)
+    write _n*3.7+1.14/7.6;
+    else read _l;
+}else read _t;
+
+if(_d<=47.6/12.0)
+_c++;
+else{
+_c+=372;
+_c*=17;
+}
+
+if(_n==_d)
+    if(_t<_n);
+    else write _d;
+else write _z;
+if(_n==7.14){if(_d>2.0){if(_z==17)write _z;else;}else read _m;}
+else write _c;
+
+if(_n==_d+_m);if(_z==12);
+while(_n==2.0)
+{
+    while(_m>17.0){
+    if(_z==17) _m-=2.5;
+}
+}
+while(_z<17){
+    while(_d>=0.25){
+        while(_m==0){
+            _m++;}}}
+
+if(_n!=_d)
+    if(_d>_m)
+        if(_l==15.0)
+            _l+=2.7;
