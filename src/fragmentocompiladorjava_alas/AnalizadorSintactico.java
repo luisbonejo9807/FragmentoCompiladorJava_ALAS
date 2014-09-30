@@ -61,6 +61,6 @@ public class AnalizadorSintactico {
         }else{
             System.out.println("Análisis sintáctico sin errores.");
         }
-        return null;
+        return raiz;
     }
 }

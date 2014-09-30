@@ -54,4 +54,5 @@ new commit/1° commit (hecho por JLCG17) añade:
 * Nuevos mensajes de error del analizador sintáctico.
 * Aparentemente el analizador sintáctico valida perfectamente cualquier capricho de while, if y else anidados, incluyendo las primitivas break y continue.
 * Se añadió a sintaxis.txt la SECUENCIA vacía, de manera que AnalizadorSintactico.java toma por válido un código fuente vacío.
+* Queda pendiente código para armar el árbol sintáctico que devolverá el analizador sintáctico.
 
