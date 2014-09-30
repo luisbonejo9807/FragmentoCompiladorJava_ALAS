@@ -48,3 +48,10 @@ new commit/1° commit (hecho por JLCG17) añade:
 * El autómata aparentemente permite anidamiento de if y else a capricho del programador, con y sin llaves.
 * Queda pendiente lograr el anidamiento de while sin llaves y el código para armar el árbol sintáctico que devolverá el analizador sintáctico.
 
+9° commit (hecho por JLCG17) añade:
+* Ahora la sintáxis permite anidación de while sin llaves.
+* El analizador sintáctico ahora no corta el análisis si se vacía la pila del autómata antes de lo debido por un error en el código fuente, intenta continuarlo.
+* Nuevos mensajes de error del analizador sintáctico.
+* Aparentemente el analizador sintáctico valida perfectamente cualquier capricho de while, if y else anidados, incluyendo las primitivas break y continue.
+* Se añadió a sintaxis.txt la SECUENCIA vacía, de manera que AnalizadorSintactico.java toma por válido un código fuente vacío.
+

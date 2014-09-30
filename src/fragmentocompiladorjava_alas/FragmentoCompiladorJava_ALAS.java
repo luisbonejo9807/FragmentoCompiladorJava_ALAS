@@ -21,7 +21,7 @@ public class FragmentoCompiladorJava_ALAS {
     public static void main(String[] args) {
         // TODO code application logic here
         //probarAnalizadorLexico("src/fragmentocompiladorjava_alas/codigofuente.fjl",true);
-        probarAnalizadorSintactico("src/fragmentocompiladorjava_alas/codigofuente.fjl", true);
+        probarAnalizadorSintactico("src/fragmentocompiladorjava_alas/codigofuente.fjl");
     }
     public static void probarAnalizadorLexico(String directorio,boolean mostrarSoloErrores)
     {
@@ -49,7 +49,7 @@ public class FragmentoCompiladorJava_ALAS {
             System.err.println("Hubo un error durante la lectura del archivo con el código fuente.");
         }
     }
-    public static void probarAnalizadorSintactico(String directorio,boolean mostrarSoloErrores)
+    public static void probarAnalizadorSintactico(String directorio)
     {
         try{
             CodigoFuente cf = new CodigoFuente(directorio);

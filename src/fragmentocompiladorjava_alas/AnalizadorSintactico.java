@@ -40,14 +40,17 @@ public class AnalizadorSintactico {
     /**
      * Arma y retorna un árbol sintáctico del código fuente.
      * Imprime los errores sintácticos que encuentre por el camino.
+     * Si encuentra un error, intenta seguir analizando, aunque eso signifique errores de arrastre.
      * 
      * @return NodoSintactico que es la raíz del árbol sintáctico del código fuente.
      */
     public NodoSintactico analizarSintaxis()
     {
         boolean sin_errores = true;
+        NodoSintactico raiz = new NodoSintactico("SECUENCIA");
         ejecutarAnalizadorLexico();
-        try{
+        if(tokensValidadosPorAL.size()>0)
+        {
             for(int i=0;i<tokensValidadosPorAL.size();i++)
                 if(!aps.tokenValidoSintacticamente(tokensValidadosPorAL.get(i))) sin_errores=false;
             if(sin_errores)
@@ -55,10 +58,8 @@ public class AnalizadorSintactico {
             else
                 aps.declararFinDeEntrada();
             if(sin_errores) System.out.println("Análisis sintáctico sin errores.");
-            
-        }catch(NullPointerException exc){
-            System.err.println("Error sintáctico fatal: el analizador no puede llegar al final del código fuente, así que busque y corrija el o los errores.");
-            //exc.printStackTrace();
+        }else{
+            System.out.println("Análisis sintáctico sin errores.");
         }
         return null;
     }

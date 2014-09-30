@@ -12,6 +12,7 @@ SECUENCIA ::= ORACION SECUENCIA
             | SI SECUENCIA
             | MIENTRAS
             | MIENTRAS SECUENCIA
+            |
             ;
 ORACION ::= INSTRUCCION PYCOMA
             | PYCOMA
