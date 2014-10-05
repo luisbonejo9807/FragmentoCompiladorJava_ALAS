@@ -16,11 +16,13 @@ public class AnalizadorSintactico {
     private AnalizadorLexico al;
     private ArrayList<Token> tokensValidadosPorAL;
     private AutomataPilaSintactico aps;
+    private int indiceToken;
     public AnalizadorSintactico(AnalizadorLexico analizadorLexico)
     {
         al = analizadorLexico;
         tokensValidadosPorAL = new ArrayList<Token>();
         aps = new AutomataPilaSintactico();
+        indiceToken=-1;
     }
     /**
      * Hace que el analizador léxico escanee todo el archivo y guarda todo objeto Token que no sea error o espacio.
@@ -35,7 +37,7 @@ public class AnalizadorSintactico {
                 tokensValidadosPorAL.add(al.getTokenActual());
             if(t==Tokens.ERROR) sin_errores = false;
         }
-        if(sin_errores) System.out.println("Análisis léxico sin errores.");
+        if(sin_errores) System.out.println("\033[32mAnálisis léxico sin errores.\033[30m");
     }
     /**
      * Arma y retorna un árbol sintáctico del código fuente.
@@ -47,19 +49,22 @@ public class AnalizadorSintactico {
     public NodoSintactico analizarSintaxis()
     {
         boolean sin_errores = true;
+        boolean valido;
         NodoSintactico raiz = new NodoSintactico("SECUENCIA");
         ejecutarAnalizadorLexico();
         if(tokensValidadosPorAL.size()>0)
         {
-            for(int i=0;i<tokensValidadosPorAL.size();i++)
-                if(!aps.tokenValidoSintacticamente(tokensValidadosPorAL.get(i))) sin_errores=false;
+            for(indiceToken=0;indiceToken<tokensValidadosPorAL.size();indiceToken++)
+            {
+                if(!(valido=aps.tokenValidoSintacticamente(tokensValidadosPorAL.get(indiceToken)))) sin_errores=false;
+            }
             if(sin_errores)
                 sin_errores = aps.declararFinDeEntrada();
             else
                 aps.declararFinDeEntrada();
-            if(sin_errores) System.out.println("Análisis sintáctico sin errores.");
+            if(sin_errores) System.out.println("\033[32mAnálisis sintáctico sin errores.\033[30m");
         }else{
-            System.out.println("Análisis sintáctico sin errores.");
+            System.out.println("\033[32mAnálisis sintáctico sin errores.\033[30m");
         }
         return raiz;
     }

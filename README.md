@@ -56,3 +56,11 @@ new commit/1° commit (hecho por JLCG17) añade:
 * Se añadió a sintaxis.txt la SECUENCIA vacía, de manera que AnalizadorSintactico.java toma por válido un código fuente vacío.
 * Queda pendiente código para armar el árbol sintáctico que devolverá el analizador sintáctico.
 
+10° commit (hecho por JLCG17) añade:
+* Se simplifica el código de AutomataPilaSintactico.java.
+* Se corrigen algunos defectos que había con el análisis de anidamiento de ifs, elses y whiles.
+* Ahora el autómata no solo pasa al estado 3 cuando hay un error, también regresa el caracter usado con una palabra errónea a la pila para reducir la frecuencia de los efectos bola de nieve.
+* Ahora los textos de consola de los analizadores tienen color: verde (manzana) para éxito y magenta (rosadito varonil) para advertencia, además del rojo para error que había.
+* Las advertencias ahora usan el flujo de salida en vez del flujo de errores.
+* Queda aún pendiente el código para armar el árbol sintáctico que devolverá el analizador sintáctico.
+
