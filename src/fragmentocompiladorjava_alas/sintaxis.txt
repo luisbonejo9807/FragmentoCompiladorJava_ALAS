@@ -7,10 +7,7 @@ non terminal SECUENCIA,ORACION,INSTRUCCION,DECLARACION,ASIGNACION,SI,SINO,CONDIC
 non terminal OY,TERMINO,OPERADOR,LISTADO,OPERANDO,TIPO,SIBUCLE,SINOBUCLE;
 
 SECUENCIA ::= ORACION SECUENCIA
-            | ORACION
-            | SI
             | SI SECUENCIA
-            | MIENTRAS
             | MIENTRAS SECUENCIA
             |
             ;
@@ -21,6 +18,7 @@ INSTRUCCION ::= DECLARACION
             | ASIGNACION
             | LEER
             | ESCRIBIR
+            |
             ;
 DECLARACION ::= TIPO IDENTIFICADOR ASIGNADOR TERMINO
             | TIPO LISTADO
@@ -49,20 +47,17 @@ CONTROL ::= BREAK PYCOMA
         | CONTINUE PYCOMA
         ;
 CONDICION ::= TERMINO COMPARADOR TERMINO
-            | TERMINO COMPARADOR TERMINO OY CONDICION
+            | CONDICION OY CONDICION
             | PARIZQ CONDICION PARDER
             ;
 NUMERO ::= NUMERO_DOUBLE
         | NUMERO_LONG
         ;
-BLOQUEBUCLE ::= CONTROL
-            | ORACION
-            | CONTROL BLOQUEBUCLE
+BLOQUEBUCLE ::= CONTROL BLOQUEBUCLE
             | ORACION BLOQUEBUCLE
-            | SIBUCLE
-            | MIENTRAS
             | SIBUCLE BLOQUEBUCLE
             | MIENTRAS BLOQUEBUCLE
+            |
             ;
 OY ::= AND
     | OR

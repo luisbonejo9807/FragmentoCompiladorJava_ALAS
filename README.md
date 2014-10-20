@@ -64,3 +64,20 @@ new commit/1° commit (hecho por JLCG17) añade:
 * Las advertencias ahora usan el flujo de salida en vez del flujo de errores.
 * Queda aún pendiente el código para armar el árbol sintáctico que devolverá el analizador sintáctico.
 
+11° commit (hecho por JLCG17) añade:
+* Se agregó documentación a los métodos de Token.java.
+* ArbolSintactico.java para la gestión del conjunto de objetos NodoSintactico.
+* Correcciones a NodoSintactico.java, de manera que un objeto NodoSintactico será de por vida terminal o no terminal.
+* El método analizarSintaxis() de la clase AnalizadorSintactico ahora devuelve un objeto ArbolSintactico en vez de uno NodoSintactico.
+* Se agregó la advertencia llaves vacías.
+* Se corrigió un bug con llaves del else.
+* Se simplificó la sintaxis de CONDICION en sintaxis.txt.
+* Se completó el código que prueba el analizador sintáctico en la clase principal del proyecto.
+* Se agregaron saltos de línea a la documentación de algunos métodos para hacerla más legible.
+* BLOQUEBUCLE, en sintaxis.txt, admite derivación a lambda, al igual que SECUENCIA.
+* Simplificación de SECUENCIA y BLOQUEBUCLE en sintaxis.txt.
+* Se corrigieron defectos de AutomataPilaSintactico.java.
+* Quedan defectos del analizador sintáctico pendientes para corregir tanto en AutomataPilaSintactico.java como en ArbolSintactico.java (siempre queda alguno o aparece uno nuevo).
+* AnalizadorSemantico.java con constructor y su método principal: analizarSemantica().
+* GeneradorDeCodigoIntermedio.java vacío.
+

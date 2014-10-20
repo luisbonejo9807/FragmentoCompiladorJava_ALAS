@@ -16,7 +16,7 @@ public class AutomataPilaSintactico {
     private int estadoActual;
     private final int[][] transitaAEstado;
     private int buclesAbiertos,ifsAbiertos,elsesAbiertos,banderaAuxiliarElse;
-    private boolean hubo_cierre_de_if;
+    private boolean hubo_cierre_de_if,anterior_fue_llaveizq;
     public AutomataPilaSintactico()
     {
         transitable = new boolean[][]{
@@ -88,7 +88,7 @@ public class AutomataPilaSintactico {
             { 1,    5,    -1,    -1,   3,  -1,    -1, -1,     -1,    -1,   -1,  11,  7,      13, -1,   -1,   26,   -1,  6,      3,   -1}//q28
         };
         buclesAbiertos = ifsAbiertos = elsesAbiertos = 0;
-        hubo_cierre_de_if = false;
+        hubo_cierre_de_if = anterior_fue_llaveizq = false;
         banderaAuxiliarElse=-1;
     }
     /**
@@ -133,28 +133,36 @@ public class AutomataPilaSintactico {
                     pila.getCaracterDeTope();
                     buclesAbiertos--;
                 }
-                if(!token.getTipo().equals("LLAVEIZQ")&&pila.verTope()=='e')
+                if(!pila.vacia())
                 {
-                    ifsAbiertos--;
-                    hubo_cierre_de_if=true;
-                }
-                if(!token.getTipo().equals("LLAVEIZQ")&&pila.verTope()=='h')
-                {
-                    pila.getCaracterDeTope();
-                    elsesAbiertos--;
-                    banderaAuxiliarElse++;
-                }
-                if(banderaAuxiliarElse==1)
-                {
-                    if(!token.getTipo().equals("ELSE"))
+                    if(!token.getTipo().equals("LLAVEIZQ")&&pila.verTope()=='e')
                     {
-                        while(pila.verTope()=='e')
-                        {
-                            pila.getCaracterDeTope();
-                            if((pilaVacia=pila.vacia())) break;
-                        }
+                        ifsAbiertos--;
+                        hubo_cierre_de_if=true;
                     }
-                    banderaAuxiliarElse=-1;
+                    if(!token.getTipo().equals("LLAVEIZQ")&&pila.verTope()=='h')
+                    {
+                        pila.getCaracterDeTope();
+                        elsesAbiertos--;
+                        banderaAuxiliarElse++;
+                    }
+                    if(token.getTipo().equals("LLAVEDER")&&hubo_cierre_de_if&&pila.verTope()=='e')
+                    {
+                        hubo_cierre_de_if=false;
+                        pila.getCaracterDeTope();
+                    }
+                    if(banderaAuxiliarElse==1)
+                    {
+                        if(!token.getTipo().equals("ELSE"))
+                        {
+                            while(pila.verTope()=='e')
+                            {
+                                pila.getCaracterDeTope();
+                                if((pilaVacia=pila.vacia())) break;
+                            }
+                        }
+                        banderaAuxiliarElse=-1;
+                    }
                 }
                 switch(token.getTipo()){
                     case "DOUBLE": if(estadoActual==3||estadoActual==24||estadoActual==28){pila.agregarCaracter('z');} break;
@@ -250,10 +258,11 @@ public class AutomataPilaSintactico {
                                  if(valido&&caracterDePila=='g'){elsesAbiertos--;}
                                  i=20;
                                  break;
-                case "LLAVEIZQ": if(caracterDePila=='c'||caracterDePila=='e'||caracterDePila=='z') valido = transitable[estadoActual][19];
+                case "LLAVEIZQ": if(caracterDePila=='c'||caracterDePila=='e'||caracterDePila=='h'||caracterDePila=='z') valido = transitable[estadoActual][19];
                                  if(valido&&caracterDePila=='c') pila.agregarCaracter('f');
                                  if(valido&&caracterDePila=='e') {pila.agregarCaracter('e');pila.agregarCaracter('d');}
-                                 if(valido&&caracterDePila=='z') {pila.agregarCaracter('g');elsesAbiertos++;}
+                                 if(valido&&caracterDePila=='h') {pila.agregarCaracter('g');elsesAbiertos++;}
+                                 if(valido)anterior_fue_llaveizq=true;
                                  i=19;
                                  break;
                 case "LONG": if(caracterDePila=='z') valido = transitable[estadoActual][0];
@@ -394,6 +403,7 @@ public class AutomataPilaSintactico {
                               break;
             }
             if(!(token.getTipo().equals("LLAVEDER")&&caracterDePila=='d'&&valido)) hubo_cierre_de_if = false;
+            if(valido&&!token.getTipo().equals("LLAVEIZQ")&&!token.getTipo().equals("LLAVEDER")) anterior_fue_llaveizq=false;
             if(!valido)
             {
                 switch(estadoActual)
@@ -415,6 +425,11 @@ public class AutomataPilaSintactico {
             if((estadoActual==3||estadoActual==28)&&token.getTipo().equals("PYCOMA"))
             {
                 System.out.println("\033[35mAdvertencia sintáctica en línea "+(token.getIndiceFila()+1)+", caracter "+(token.getIndiceComienzo()+1)+": instrucción vacía.\033[30m");
+            }
+            if(valido&&token.getTipo().equals("LLAVEDER")&&anterior_fue_llaveizq)
+            {
+                System.out.println("\033[35mAdvertencia sintáctica en línea "+(token.getIndiceFila()+1)+", caracter "+(token.getIndiceComienzo())+": llaves vacías.\033[30m");
+                anterior_fue_llaveizq=false;
             }
             if(!valido)
             {
