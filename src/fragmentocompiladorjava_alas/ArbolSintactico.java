@@ -9,7 +9,8 @@ package fragmentocompiladorjava_alas;
 import java.util.ArrayList;
 
 /**
- *
+ * Este arbol se rige bajo la política LL(1) (se aconseja leer el libro sobre compiladores de Keneth C. Louden) aunque hay recursividad para la lectura.
+ * 
  * @author JLCG17
  */
 public class ArbolSintactico {
@@ -383,36 +384,36 @@ public class ArbolSintactico {
             switch(terminales.get(indiceFinCondicion+1).getTipo())
             {
                 case "BREAK":
-                    agregarControl(subsubraiz, new ArrayList(terminales.subList(indiceFinCondicion+1, indiceProximoPYCOMA+1)));
+                    agregarControl(auxiliar.get(0), new ArrayList(terminales.subList(indiceFinCondicion+1, indiceProximoPYCOMA+1)));
                     break;
                 case "CONTINUE":
-                    agregarControl(subsubraiz, new ArrayList(terminales.subList(indiceFinCondicion+1, indiceProximoPYCOMA+1)));
+                    agregarControl(auxiliar.get(0), new ArrayList(terminales.subList(indiceFinCondicion+1, indiceProximoPYCOMA+1)));
                     break;
                 case "DOUBLE":
-                    agregarDeclaracion(subsubraiz, new ArrayList(terminales.subList(indiceFinCondicion+1, indiceProximoPYCOMA+1)));
+                    agregarDeclaracion(auxiliar.get(0), new ArrayList(terminales.subList(indiceFinCondicion+1, indiceProximoPYCOMA+1)));
                     break;
                 case "IDENTIFICADOR":
-                    agregarAsignacion(subsubraiz, new ArrayList(terminales.subList(indiceFinCondicion+1, indiceProximoPYCOMA+1)));
+                    agregarAsignacion(auxiliar.get(0), new ArrayList(terminales.subList(indiceFinCondicion+1, indiceProximoPYCOMA+1)));
                     break;
                 case "IF":
                     if(terminales.get(terminales.size()-1).getTipo().equals("PYCOMA"))
                     {
-                        agregarSiBucle(subsubraiz, new ArrayList(terminales.subList(indiceFinCondicion+1, indiceProximoPYCOMA+1)));
+                        agregarSiBucle(auxiliar.get(0), new ArrayList(terminales.subList(indiceFinCondicion+1, indiceProximoPYCOMA+1)));
                     }else{
-                        agregarSiBucle(subsubraiz, new ArrayList(terminales.subList(indiceFinCondicion+1, terminales.size())));
+                        agregarSiBucle(auxiliar.get(0), new ArrayList(terminales.subList(indiceFinCondicion+1, terminales.size())));
                     }
                     break;
                 case "LONG":
-                    agregarDeclaracion(subsubraiz, new ArrayList(terminales.subList(indiceFinCondicion+1, indiceProximoPYCOMA+1)));
+                    agregarDeclaracion(auxiliar.get(0), new ArrayList(terminales.subList(indiceFinCondicion+1, indiceProximoPYCOMA+1)));
                     break;
                 case "READ":
-                    agregarLeer(subsubraiz, new ArrayList(terminales.subList(indiceFinCondicion+1, indiceProximoPYCOMA+1)));
+                    agregarLeer(auxiliar.get(0), new ArrayList(terminales.subList(indiceFinCondicion+1, indiceProximoPYCOMA+1)));
                     break;
                 case "WHILE":
-                    agregarMientras(subsubraiz, new ArrayList(terminales.subList(indiceFinCondicion+1, indiceProximoPYCOMA+1)));
+                    agregarMientras(auxiliar.get(0), new ArrayList(terminales.subList(indiceFinCondicion+1, indiceProximoPYCOMA+1)));
                     break;
                 case "WRITE":
-                    agregarEscribir(subsubraiz, new ArrayList(terminales.subList(indiceFinCondicion+1, indiceProximoPYCOMA+1)));
+                    agregarEscribir(auxiliar.get(0), new ArrayList(terminales.subList(indiceFinCondicion+1, indiceProximoPYCOMA+1)));
                     break;
             }
         }
@@ -702,12 +703,12 @@ public class ArbolSintactico {
                             {
                                 agregarControl(subsubraiz, instruccion);
                                 primera_vez = false;
-                                auxiliar.add(new NodoSintactico("SECUENCIA"));
+                                auxiliar.add(new NodoSintactico("BLOQUEBUCLE"));
                                 subsubraiz.agregarDerivado(auxiliar.get(0));
                                 instruccion.clear();
                             }else{
                                 agregarControl(auxiliar.get(auxiliar.size()-1), instruccion);
-                                auxiliar.add(new NodoSintactico("SECUENCIA"));
+                                auxiliar.add(new NodoSintactico("BLOQUEBUCLE"));
                                 subsubraiz.agregarDerivado(auxiliar.get(auxiliar.size()-1));
                                 instruccion.clear();
                             }
@@ -717,12 +718,12 @@ public class ArbolSintactico {
                             {
                                 agregarControl(subsubraiz, instruccion);
                                 primera_vez = false;
-                                auxiliar.add(new NodoSintactico("SECUENCIA"));
+                                auxiliar.add(new NodoSintactico("BLOQUEBUCLE"));
                                 subsubraiz.agregarDerivado(auxiliar.get(0));
                                 instruccion.clear();
                             }else{
                                 agregarControl(auxiliar.get(auxiliar.size()-1), instruccion);
-                                auxiliar.add(new NodoSintactico("SECUENCIA"));
+                                auxiliar.add(new NodoSintactico("BLOQUEBUCLE"));
                                 subsubraiz.agregarDerivado(auxiliar.get(auxiliar.size()-1));
                                 instruccion.clear();
                             }
@@ -732,12 +733,12 @@ public class ArbolSintactico {
                             {
                                 agregarDeclaracion(subsubraiz, instruccion);
                                 primera_vez = false;
-                                auxiliar.add(new NodoSintactico("SECUENCIA"));
+                                auxiliar.add(new NodoSintactico("BLOQUEBUCLE"));
                                 subsubraiz.agregarDerivado(auxiliar.get(0));
                                 instruccion.clear();
                             }else{
                                 agregarDeclaracion(auxiliar.get(auxiliar.size()-1), instruccion);
-                                auxiliar.add(new NodoSintactico("SECUENCIA"));
+                                auxiliar.add(new NodoSintactico("BLOQUEBUCLE"));
                                 subsubraiz.agregarDerivado(auxiliar.get(auxiliar.size()-1));
                                 instruccion.clear();
                             }
@@ -747,12 +748,12 @@ public class ArbolSintactico {
                             {
                                 agregarAsignacion(subsubraiz, instruccion);
                                 primera_vez = false;
-                                auxiliar.add(new NodoSintactico("SECUENCIA"));
+                                auxiliar.add(new NodoSintactico("BLOQUEBUCLE"));
                                 subsubraiz.agregarDerivado(auxiliar.get(0));
                                 instruccion.clear();
                             }else{
                                 agregarAsignacion(auxiliar.get(auxiliar.size()-1), instruccion);
-                                auxiliar.add(new NodoSintactico("SECUENCIA"));
+                                auxiliar.add(new NodoSintactico("BLOQUEBUCLE"));
                                 subsubraiz.agregarDerivado(auxiliar.get(auxiliar.size()-1));
                                 instruccion.clear();
                             }
@@ -762,12 +763,12 @@ public class ArbolSintactico {
                             {
                                 agregarSiBucle(subsubraiz, instruccion);
                                 primera_vez = false;
-                                auxiliar.add(new NodoSintactico("SECUENCIA"));
+                                auxiliar.add(new NodoSintactico("BLOQUEBUCLE"));
                                 subsubraiz.agregarDerivado(auxiliar.get(0));
                                 instruccion.clear();
                             }else{
                                 agregarSiBucle(auxiliar.get(auxiliar.size()-1), instruccion);
-                                auxiliar.add(new NodoSintactico("SECUENCIA"));
+                                auxiliar.add(new NodoSintactico("BLOQUEBUCLE"));
                                 subsubraiz.agregarDerivado(auxiliar.get(auxiliar.size()-1));
                                 instruccion.clear();
                             }
@@ -777,12 +778,12 @@ public class ArbolSintactico {
                             {
                                 agregarDeclaracion(subsubraiz, instruccion);
                                 primera_vez = false;
-                                auxiliar.add(new NodoSintactico("SECUENCIA"));
+                                auxiliar.add(new NodoSintactico("BLOQUEBUCLE"));
                                 subsubraiz.agregarDerivado(auxiliar.get(0));
                                 instruccion.clear();
                             }else{
                                 agregarDeclaracion(auxiliar.get(auxiliar.size()-1), instruccion);
-                                auxiliar.add(new NodoSintactico("SECUENCIA"));
+                                auxiliar.add(new NodoSintactico("BLOQUEBUCLE"));
                                 subsubraiz.agregarDerivado(auxiliar.get(auxiliar.size()-1));
                                 instruccion.clear();
                             }
@@ -792,12 +793,12 @@ public class ArbolSintactico {
                             {
                                 agregarInstruccionVacia(subsubraiz, instruccion);
                                 primera_vez = false;
-                                auxiliar.add(new NodoSintactico("SECUENCIA"));
+                                auxiliar.add(new NodoSintactico("BLOQUEBUCLE"));
                                 subsubraiz.agregarDerivado(auxiliar.get(0));
                                 instruccion.clear();
                             }else{
                                 agregarInstruccionVacia(auxiliar.get(auxiliar.size()-1), instruccion);
-                                auxiliar.add(new NodoSintactico("SECUENCIA"));
+                                auxiliar.add(new NodoSintactico("BLOQUEBUCLE"));
                                 subsubraiz.agregarDerivado(auxiliar.get(auxiliar.size()-1));
                                 instruccion.clear();
                             }
@@ -807,12 +808,12 @@ public class ArbolSintactico {
                             {
                                 agregarLeer(subsubraiz, instruccion);
                                 primera_vez = false;
-                                auxiliar.add(new NodoSintactico("SECUENCIA"));
+                                auxiliar.add(new NodoSintactico("BLOQUEBUCLE"));
                                 subsubraiz.agregarDerivado(auxiliar.get(0));
                                 instruccion.clear();
                             }else{
                                 agregarLeer(auxiliar.get(auxiliar.size()-1), instruccion);
-                                auxiliar.add(new NodoSintactico("SECUENCIA"));
+                                auxiliar.add(new NodoSintactico("BLOQUEBUCLE"));
                                 subsubraiz.agregarDerivado(auxiliar.get(auxiliar.size()-1));
                                 instruccion.clear();
                             }
@@ -822,12 +823,12 @@ public class ArbolSintactico {
                             {
                                 agregarMientras(subsubraiz, instruccion);
                                 primera_vez = false;
-                                auxiliar.add(new NodoSintactico("SECUENCIA"));
+                                auxiliar.add(new NodoSintactico("BLOQUEBUCLE"));
                                 subsubraiz.agregarDerivado(auxiliar.get(0));
                                 instruccion.clear();
                             }else{
                                 agregarMientras(auxiliar.get(auxiliar.size()-1), instruccion);
-                                auxiliar.add(new NodoSintactico("SECUENCIA"));
+                                auxiliar.add(new NodoSintactico("BLOQUEBUCLE"));
                                 subsubraiz.agregarDerivado(auxiliar.get(auxiliar.size()-1));
                                 instruccion.clear();
                             }
@@ -837,12 +838,12 @@ public class ArbolSintactico {
                             {
                                 agregarEscribir(subsubraiz, instruccion);
                                 primera_vez = false;
-                                auxiliar.add(new NodoSintactico("SECUENCIA"));
+                                auxiliar.add(new NodoSintactico("BLOQUEBUCLE"));
                                 subsubraiz.agregarDerivado(auxiliar.get(0));
                                 instruccion.clear();
                             }else{
                                 agregarEscribir(auxiliar.get(auxiliar.size()-1), instruccion);
-                                auxiliar.add(new NodoSintactico("SECUENCIA"));
+                                auxiliar.add(new NodoSintactico("BLOQUEBUCLE"));
                                 subsubraiz.agregarDerivado(auxiliar.get(auxiliar.size()-1));
                                 instruccion.clear();
                             }
@@ -865,12 +866,12 @@ public class ArbolSintactico {
                                 {
                                     agregarSi(subsubraiz, instruccion);
                                     primera_vez = false;
-                                    auxiliar.add(new NodoSintactico("SECUENCIA"));
+                                    auxiliar.add(new NodoSintactico("BLOQUEBUCLE"));
                                     subsubraiz.agregarDerivado(auxiliar.get(0));
                                     instruccion.clear();
                                 }else{
                                     agregarSi(auxiliar.get(auxiliar.size()-1), instruccion);
-                                    auxiliar.add(new NodoSintactico("SECUENCIA"));
+                                    auxiliar.add(new NodoSintactico("BLOQUEBUCLE"));
                                     subsubraiz.agregarDerivado(auxiliar.get(auxiliar.size()-1));
                                     instruccion.clear();
                                 }
@@ -880,12 +881,12 @@ public class ArbolSintactico {
                                 {
                                     agregarMientras(subsubraiz, instruccion);
                                     primera_vez = false;
-                                    auxiliar.add(new NodoSintactico("SECUENCIA"));
+                                    auxiliar.add(new NodoSintactico("BLOQUEBUCLE"));
                                     subsubraiz.agregarDerivado(auxiliar.get(0));
                                     instruccion.clear();
                                 }else{
                                     agregarMientras(auxiliar.get(auxiliar.size()-1), instruccion);
-                                    auxiliar.add(new NodoSintactico("SECUENCIA"));
+                                    auxiliar.add(new NodoSintactico("BLOQUEBUCLE"));
                                     subsubraiz.agregarDerivado(auxiliar.get(auxiliar.size()-1));
                                     instruccion.clear();
                                 }
@@ -1575,7 +1576,7 @@ public class ArbolSintactico {
                     if(raiz.getDerivado(i).tieneDerivados())
                     {
                         try{
-                            alns.addAll(subObtenerTodosLosDerivados(raiz.getDerivado(i),nombre));
+                            alns.addAll(obtenerTodosLosDerivados(raiz.getDerivado(i),nombre));
                         }catch(NullPointerException exc){}
                     }
                 }
@@ -1583,7 +1584,14 @@ public class ArbolSintactico {
         }
         return alns;
     }
-    private ArrayList<NodoSintactico> subObtenerTodosLosDerivados(NodoSintactico subraiz,String nombre)
+    /**
+     * Busca todos los NodoSintactico con el nombre especificado que sean derivados del NodoSintactico especificado.
+     * 
+     * @param subraiz NodoSintactico de ArbolSintactico a partir del cual se desea buscar derivados (el arreglo puede no contener elementos)
+     * @param nombre String
+     * @return ArrayList<NodoSintactico>
+     */
+    public ArrayList<NodoSintactico> obtenerTodosLosDerivados(NodoSintactico subraiz,String nombre)
     {
         ArrayList<NodoSintactico> alns = new ArrayList();
         for(int i=0;i<subraiz.getDerivados().size();i++)
@@ -1591,15 +1599,47 @@ public class ArbolSintactico {
             if(subraiz.getDerivado(i).getNombre().equals(nombre))
             {
                 alns.add(subraiz.getDerivado(i));
+                if(subraiz.getDerivado(i).tieneDerivados())
+                {
+                    try{
+                        alns.addAll(obtenerTodosLosDerivados(subraiz.getDerivado(i),nombre));
+                    }catch(NullPointerException exc){}
+                }
             }else{
                 if(subraiz.getDerivado(i).tieneDerivados())
                 {
                     try{
-                        alns.addAll(subObtenerTodosLosDerivados(subraiz.getDerivado(i),nombre));
+                        alns.addAll(obtenerTodosLosDerivados(subraiz.getDerivado(i),nombre));
                     }catch(NullPointerException exc){}
                 }
             }
         }
         return alns;
+    }
+    /**
+     * Obtiene los nodos SECUENCIA (o BLOQUEBUCLE) enlazados a inicioSecuencia y de esa obtención busca los derivados inmediatos que tengan el nombre buscado.
+     * 
+     * @param inicioSecuencia NodoSintactico que comience la secuencia
+     * @param buscado String con el nombre de NodoSintactico
+     * @return ArrayList<NodoSintactico> con las ocurrencias de NodoSintactico halladas
+     */
+    public ArrayList<NodoSintactico> obtenerDerivadosDirectosDeUnaSecuencia(NodoSintactico inicioSecuencia,String buscado)
+    {
+        ArrayList<NodoSintactico> secuencia = new ArrayList();
+        ArrayList<NodoSintactico> encontrados = new ArrayList();
+        secuencia.add(inicioSecuencia);
+        while(secuencia.get(secuencia.size()-1).tieneDerivados())
+            secuencia.add(secuencia.get(secuencia.size()-1).getDerivado(1));
+        for(int i=0;i<secuencia.size();i++)
+            if(secuencia.get(i).tieneDerivados())
+            {
+                if(secuencia.get(i).getDerivado(0).getNombre().equals(buscado))
+                    encontrados.add(secuencia.get(i).getDerivado(0));
+                else
+                    if(secuencia.get(i).getDerivado(0).getNombre().equals("ORACION"))
+                        if(secuencia.get(i).getDerivado(0).getDerivado(0).getDerivado(0).getNombre().equals(buscado))
+                            encontrados.add(secuencia.get(i).getDerivado(0).getDerivado(0).getDerivado(0));
+            }
+        return encontrados;
     }
 }

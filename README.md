@@ -81,3 +81,13 @@ new commit/1° commit (hecho por JLCG17) añade:
 * AnalizadorSemantico.java con constructor y su método principal: analizarSemantica().
 * GeneradorDeCodigoIntermedio.java vacío.
 
+12° commit (hecho por JLCG17) añade:
+* Se borraron métodos innecesarios de AutomataPilaSintactico.java.
+* Correcciones en ArbolSintactico.java, entre ellas, ahora se agrega bien la oración a los while de una instrucción.
+* Código de prueba del analizador semántico en la clase principal del proyecto.
+* Código funcional de AnalizadorSemantico.java que incluye varios errores y una advertencia (se asume que es válido, pero mala práctica de programación declarar una variable dentro de un if, else o while de una sola línea).
+* Clase Variable.java y su código funcional.
+* Corrección de un bug de AnalizadorLexico.java que salteaba la última línea del código fuente si la previa era vacía.
+* Queda pendiente el generador de código intermedio.
+* Nota: el analizador semántico, a diferencia de los anteriores, no pasa a la siguiente etapa la parte no errónea descartando la errónea, sino que directamente nada si hubo algún error.
+

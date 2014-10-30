@@ -7,7 +7,8 @@
 package fragmentocompiladorjava_alas;
 
 /**
- *
+ * Ver el archivo sintaxis.txt para entender qué sintáxis se evalúa.
+ * 
  * @author JLCG17
  */
 public class AutomataPilaSintactico {
@@ -21,7 +22,7 @@ public class AutomataPilaSintactico {
     {
         transitable = new boolean[][]{
             //TIPO  ID    COMA   =     ;   ++/--  :=  0..9|ID +-*/   (     )    READ WRITE   IF  COMP  &&||  WHILE ELSE CONTROL  {     }
-            { true, true,false,false,false,false,false,false,false,false,false, true, true, true,false,false, true,false,false,false,false},//q0
+            { true, true,false,false, true,false,false,false,false,false,false, true, true, true,false,false, true,false,false,false,false},//q0
             {false, true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},//q1
             {false,false, true, true, true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},//q2
             { true, true,false,false,true,false,false,false,false,false,false, true, true, true,false,false, true, true, true,false, true},//q3
@@ -56,7 +57,7 @@ public class AutomataPilaSintactico {
         estadoActual = 0;
         transitaAEstado = new int[][]{
             //TIPO  ID    COMA   =     ;   ++/--  :=  0..9|ID +-*/   (     )    READ WRITE   IF  COMP  &&||  WHILE ELSE CONTROL  {     }
-            { 1,    5,    -1,    -1,   -1, -1,    -1, -1,     -1,    -1,   -1,  11,  7,      13, -1,   -1,   26,   -1,  -1,      -1,   -1},//q0
+            { 1,    5,    -1,    -1,   3,  -1,    -1, -1,     -1,    -1,   -1,  11,  7,      13, -1,   -1,   26,   -1,  -1,      -1,   -1},//q0
             { -1,   2,    -1,    -1,   -1, -1,    -1, -1,     -1,    -1,   -1,  -1,  -1,     -1, -1,   -1,   -1,   -1,  -1,      -1,   -1},//q1
             { -1,   -1,   4,     7,    3,  -1,    -1, -1,     -1,    -1,   -1,  -1,  -1,     -1, -1,   -1,   -1,   -1,  -1,      -1,   -1},//q2
             { 1,    5,    -1,    -1,   3,  -1,    -1, -1,     -1,    -1,   -1,  11,  7,      13, -1,   -1,   26,   28,  6,       -1,   3},//q3
@@ -497,17 +498,5 @@ public class AutomataPilaSintactico {
         pila = new PilaDeCaracteres();
         estadoActual=0;
         return sin_errores;
-    }
-    public boolean hayAlMenosUnBucleAbierto()
-    {
-        return buclesAbiertos>0;
-    }
-    public boolean hayAlMenosUnIfAbierto()
-    {
-        return ifsAbiertos>0;
-    }
-    public boolean hayAlMenosUnElseAbierto()
-    {
-        return elsesAbiertos>0;
     }
 }

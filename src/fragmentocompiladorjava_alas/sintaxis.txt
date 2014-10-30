@@ -18,7 +18,6 @@ INSTRUCCION ::= DECLARACION
             | ASIGNACION
             | LEER
             | ESCRIBIR
-            |
             ;
 DECLARACION ::= TIPO IDENTIFICADOR ASIGNADOR TERMINO
             | TIPO LISTADO

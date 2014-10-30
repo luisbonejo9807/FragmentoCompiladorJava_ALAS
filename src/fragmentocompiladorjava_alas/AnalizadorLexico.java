@@ -69,7 +69,7 @@ public class AnalizadorLexico {
             if(token.contains("."))
             {
                 String[] partes = new String[]{token.substring(0,token.indexOf(".")),token.substring(token.indexOf(".")+1)};
-                //String[] partes = token.split(".",2); no me funcionó, por eso la línea de arriba.
+                //String[] partes = token.split(".",2); //no me funcionó, por eso la línea de arriba.
                 boolean valido = false;
                 for(int i=0;i<2;i++)
                 {
@@ -324,7 +324,7 @@ public class AnalizadorLexico {
                     indiceFila++;
                     t = siguienteToken();
                 }
-                if(indiceFila==entrada.size()-1)
+                if(indiceFila==entrada.size())
                 {
                     t = Tokens.EOT;
                     tokenActual = new Token("",0,0);

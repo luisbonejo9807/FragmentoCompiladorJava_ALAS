@@ -20,8 +20,9 @@ public class FragmentoCompiladorJava_ALAS {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        //probarAnalizadorLexico("src/fragmentocompiladorjava_alas/codigofuente.fjl",true);
-        probarAnalizadorSintactico("src/fragmentocompiladorjava_alas/codigofuente.fjl",true);
+        //probarAnalizadorLexico("src/fragmentocompiladorjava_alas/codigofuente.fjl",false);
+        //probarAnalizadorSintactico("src/fragmentocompiladorjava_alas/codigofuente.fjl",true);
+        probarAnalizadorSemantico("src/fragmentocompiladorjava_alas/codigofuente.fjl");
     }
     public static void probarAnalizadorLexico(String directorio,boolean mostrarSoloErrores)
     {
@@ -58,6 +59,20 @@ public class FragmentoCompiladorJava_ALAS {
             ArbolSintactico arsi = as.analizarSintaxis();
             if(mostrarArbol)
                 System.out.println("\033[34m"+arsi.toString()+"\033[30m");
+        }catch(FileNotFoundException exc){
+            System.err.println("No se encontró el archivo con el código fuente.");
+        }catch(IOException exc){
+            System.err.println("Hubo un error durante la lectura del archivo con el código fuente.");
+        }
+    }
+    public static void probarAnalizadorSemantico(String directorio)
+    {
+        try{
+            CodigoFuente cf = new CodigoFuente(directorio);
+            AnalizadorLexico al = new AnalizadorLexico(cf.getLineas());
+            AnalizadorSintactico as = new AnalizadorSintactico(al);
+            AnalizadorSemantico anse = new AnalizadorSemantico(as);
+            anse.analizarSemantica();
         }catch(FileNotFoundException exc){
             System.err.println("No se encontró el archivo con el código fuente.");
         }catch(IOException exc){

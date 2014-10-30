@@ -9,7 +9,7 @@ package fragmentocompiladorjava_alas;
 import java.util.ArrayList;
 
 /**
- *
+ * 
  * @author JLCG17
  */
 public class AnalizadorSintactico {
