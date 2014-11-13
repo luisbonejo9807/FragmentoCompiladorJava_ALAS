@@ -29,11 +29,14 @@ public class AnalizadorSemantico {
      */
     public ArbolSintactico analizarSemantica() throws Error
     {
+        arsi = ansi.analizarSintaxis();
         analizarSecuencia(arsi.getRaiz(),new ArrayList());
         if(sin_errores)
             System.out.println("\033[32mAnálisis semántico sin errores.\033[30m");
-        else
-            throw new Error("Hubo uno o más errores semánticos. Corríjalos para que se pueda generar el codigo intermedio.");
+        if(ansi.huboErrorLexico()||ansi.huboErrorSintactico()||!sin_errores)
+        {
+            throw new Error("No se puede generar el código intermedio si hubo algún error en el análisis.");
+        }
         return arsi;
     }
     private void analizarSecuencia(NodoSintactico inicioSecuencia,ArrayList<Variable> variablesGlobales)
@@ -44,6 +47,7 @@ public class AnalizadorSemantico {
         ArrayList<NodoSintactico> asignaciones = arsi.obtenerDerivadosDirectosDeUnaSecuencia(inicioSecuencia, "ASIGNACION");
         ArrayList<NodoSintactico> leeres = arsi.obtenerDerivadosDirectosDeUnaSecuencia(inicioSecuencia, "LEER");
         ArrayList<NodoSintactico> sies = arsi.obtenerDerivadosDirectosDeUnaSecuencia(inicioSecuencia, "SI");
+        ArrayList<NodoSintactico> siBucles = arsi.obtenerDerivadosDirectosDeUnaSecuencia(inicioSecuencia, "SIBUCLE");
         ArrayList<NodoSintactico> mientras = arsi.obtenerDerivadosDirectosDeUnaSecuencia(inicioSecuencia, "MIENTRAS");
         ArrayList<NodoSintactico> escribires = arsi.obtenerDerivadosDirectosDeUnaSecuencia(inicioSecuencia, "ESCRIBIR");
         if(!variablesGlobales.isEmpty()) variablesDeclaradas.addAll(variablesGlobales);
@@ -51,6 +55,7 @@ public class AnalizadorSemantico {
         analizarAsignaciones(asignaciones,variablesDeclaradas);
         analizarLeeres(leeres,variablesDeclaradas);
         analizarSies(sies,variablesDeclaradas);
+        analizarSies(siBucles,variablesDeclaradas);
         analizarMientras(mientras,variablesDeclaradas);
         analizarEscribires(escribires,variablesDeclaradas);
     }
@@ -420,9 +425,13 @@ public class AnalizadorSemantico {
                         aux.add(sies.get(i).getDerivado(4));
                         analizarSies(aux,variablesDeclaradas);
                         break;
+                    case "SIBUCLE":
+                        aux.add(sies.get(i).getDerivado(4));
+                        analizarSies(aux,variablesDeclaradas);
+                        break;
                 }
             }
-            if(sies.get(i).getDerivado(sies.get(i).getDerivados().size()-1).getNombre().equals("SINO"))        
+            if(sies.get(i).getDerivado(sies.get(i).getDerivados().size()-1).getNombre().equals("SINOBUCLE"))
             {
                 if(sies.get(i).getDerivado(sies.get(i).getDerivados().size()-1).getDerivado("SECUENCIA").size()==1)
                 {
@@ -464,6 +473,10 @@ public class AnalizadorSemantico {
                             aux.add(sies.get(i).getDerivado(sies.get(i).getDerivados().size()-1));
                             analizarSies(aux,variablesDeclaradas);
                             break;
+                        case "SIBUCLE":
+                            aux.add(sies.get(i).getDerivado(sies.get(i).getDerivados().size()-1));
+                            analizarSies(aux,variablesDeclaradas);
+                            break;
                     }
                 }
             }
@@ -475,7 +488,7 @@ public class AnalizadorSemantico {
         if(!variablesGlobales.isEmpty()) variablesDeclaradas.addAll(variablesGlobales);
         for(int i=0;i<mientras.size();i++)
         {
-            ArrayList<NodoSintactico> identificadores = arsi.obtenerTodosLosDerivados(mientras.get(i).getDerivado(2), "CONDICION");
+            ArrayList<NodoSintactico> identificadores = arsi.obtenerTodosLosDerivados(mientras.get(i).getDerivado(2), "IDENTIFICADOR");
             for(int j=0;j<identificadores.size();j++)
             {
                 Token identificador = identificadores.get(j).getToken();
@@ -539,7 +552,7 @@ public class AnalizadorSemantico {
                                 break;
                         }
                         break;
-                    case "SI":
+                    case "SIBUCLE":
                         aux.add(mientras.get(i).getDerivado(mientras.get(i).getDerivados().size()-1));
                         analizarSies(aux,variablesDeclaradas);
                         break;

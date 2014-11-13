@@ -150,7 +150,11 @@ public class AutomataPilaSintactico {
                     if(token.getTipo().equals("LLAVEDER")&&hubo_cierre_de_if&&pila.verTope()=='e')
                     {
                         hubo_cierre_de_if=false;
-                        pila.getCaracterDeTope();
+                        while(pila.verTope()=='e')
+                        {
+                            pila.getCaracterDeTope();
+                            if((pilaVacia=pila.vacia())) break;
+                        }
                     }
                     if(banderaAuxiliarElse==1)
                     {

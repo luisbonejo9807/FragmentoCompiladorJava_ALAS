@@ -89,5 +89,18 @@ new commit/1° commit (hecho por JLCG17) añade:
 * Clase Variable.java y su código funcional.
 * Corrección de un bug de AnalizadorLexico.java que salteaba la última línea del código fuente si la previa era vacía.
 * Queda pendiente el generador de código intermedio.
-* Nota: el analizador semántico, a diferencia de los anteriores, no pasa a la siguiente etapa la parte no errónea descartando la errónea, sino que directamente nada si hubo algún error.
+* Nota: el analizador semántico, a diferencia de los anteriores, no pasa a la siguiente etapa la parte no errónea descartando la errónea, sino que directamente nada si hubo algún error. No obstante, si hay error léxico o sintáctico, tampoco se genera el código intermedio.
+
+13° commit (hecho por JLCG17) añade:
+* Código de cierre de archivo para CodigoFuente.java.
+* Código funcional para GeneradorDeCodigoIntermedio.java.
+* Código en AnalizadorSintactico.java para determinar si hubo algún error léxico o sintáctico (para que el analizador semántico lo sepa a la hora de decidir si dar el OK al generador de código intermedio).
+* Se agregó a la clase principal el código de prueba para el generador de código intermedio.
+* Se agregó algo de código a ArbolSintactico.java.
+* Se corrigió un bug en AutomataPilaSintactico.java que había al validar un while con llaves con varios if con llaves en serie (es decir, no anidados entre sí).
+* Ahora las SECUENCIA y los BLOQUEBUCLE se arman bien en ArbolSintactico.java, aunque el toString() sigue siendo defectuoso.
+* Quedan pendientes el análisis semántico de las condiciones (si el desarrollador desea que el compilador exija cosas como NUMERO_LONG COMPARADOR NUMERO_LONG, IDENTIFICADOR<DOUBLE> COMPARADOR NUMERO_DOUBLE, etcétera), como así también la generación satisfactoria del código intermedio de tres direcciones para TERMINO con paréntesis y CONDICION en cualquier forma (actualmente, si es TERMINO con al menos un paréntesis o si es CONDICION -sin importar si es con o sin paréntesis- asigna todo a una variable sin respetar las tres direcciones).
+* GeneradorDeCodigoIntermedio.java genera código C++ sin errores de compilación hasta donde se sabe.
+* GeneradorDeCodigoIntermedio.java genera código intermedio de tres direcciones sin exceder las tres direcciones en caso alguno a excepción de CONDICION y de TERMINO con paréntesis, como ya se mencionó.
+* codigofuente.cpp contiene el código generado automáticamente por GeneradorDeCodigoIntermedio.java. Si el archivo es borrado, el generador de código lo crea de nuevo en su próxima ejecución.
 

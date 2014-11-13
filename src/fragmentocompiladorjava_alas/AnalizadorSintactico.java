@@ -17,12 +17,14 @@ public class AnalizadorSintactico {
     private ArrayList<Token> tokensValidadosPorAL;
     private AutomataPilaSintactico aps;
     private int indiceToken;
+    private boolean huboErrorLexico,huboErrorSintactico;
     public AnalizadorSintactico(AnalizadorLexico analizadorLexico)
     {
         al = analizadorLexico;
         tokensValidadosPorAL = new ArrayList<Token>();
         aps = new AutomataPilaSintactico();
         indiceToken=-1;
+        huboErrorLexico=huboErrorSintactico=false;
     }
     /**
      * Hace que el analizador léxico escanee todo el archivo y guarda todo objeto Token que no sea error o espacio.
@@ -128,4 +130,13 @@ public class AnalizadorSintactico {
         }
         return as;
     }
+
+    public boolean huboErrorLexico() {
+        return huboErrorLexico;
+    }
+
+    public boolean huboErrorSintactico() {
+        return huboErrorSintactico;
+    }
+    
 }

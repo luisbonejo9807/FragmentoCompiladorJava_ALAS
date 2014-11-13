@@ -29,13 +29,15 @@ public class CodigoFuente {
      */
     public CodigoFuente(String directorio) throws FileNotFoundException,IOException
     {
-        lineas = new ArrayList<String>();
+        lineas = new ArrayList();
         File archivo = new File(directorio);
         FileReader lector = new FileReader(archivo);
         BufferedReader buffer = new BufferedReader(lector);
-        String linea = "";
+        String linea;
         while((linea=buffer.readLine())!=null)
             lineas.add(linea);
+        buffer.close();
+        lector.close();
     }
     public ArrayList<String> getLineas()
     {

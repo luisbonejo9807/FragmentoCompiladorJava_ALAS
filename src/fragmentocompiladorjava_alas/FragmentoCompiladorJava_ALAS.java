@@ -22,7 +22,8 @@ public class FragmentoCompiladorJava_ALAS {
         // TODO code application logic here
         //probarAnalizadorLexico("src/fragmentocompiladorjava_alas/codigofuente.fjl",false);
         //probarAnalizadorSintactico("src/fragmentocompiladorjava_alas/codigofuente.fjl",true);
-        probarAnalizadorSemantico("src/fragmentocompiladorjava_alas/codigofuente.fjl");
+        //probarAnalizadorSemantico("src/fragmentocompiladorjava_alas/codigofuente.fjl");
+        probarGeneradorDeCodigoIntermedio("src/fragmentocompiladorjava_alas/codigofuente.fjl");
     }
     public static void probarAnalizadorLexico(String directorio,boolean mostrarSoloErrores)
     {
@@ -73,6 +74,21 @@ public class FragmentoCompiladorJava_ALAS {
             AnalizadorSintactico as = new AnalizadorSintactico(al);
             AnalizadorSemantico anse = new AnalizadorSemantico(as);
             anse.analizarSemantica();
+        }catch(FileNotFoundException exc){
+            System.err.println("No se encontró el archivo con el código fuente.");
+        }catch(IOException exc){
+            System.err.println("Hubo un error durante la lectura del archivo con el código fuente.");
+        }
+    }
+    public static void probarGeneradorDeCodigoIntermedio(String directorio)
+    {
+        try{
+            CodigoFuente cf = new CodigoFuente(directorio);
+            AnalizadorLexico al = new AnalizadorLexico(cf.getLineas());
+            AnalizadorSintactico as = new AnalizadorSintactico(al);
+            AnalizadorSemantico anse = new AnalizadorSemantico(as);
+            GeneradorDeCodigoIntermedio gci = new GeneradorDeCodigoIntermedio(anse);
+            gci.generarCodigoIntermedio((directorio.substring(0, directorio.length()-3)+"cpp"));
         }catch(FileNotFoundException exc){
             System.err.println("No se encontró el archivo con el código fuente.");
         }catch(IOException exc){
